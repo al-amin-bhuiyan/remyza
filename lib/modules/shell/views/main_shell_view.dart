@@ -6,7 +6,9 @@ import '../../../../shared/widgets/app_nav_bar.dart';
 import '../controllers/shell_controller.dart';
 import '../../home/views/home_view.dart';
 import '../../settings/views/settings_view.dart';
-// Note: Other views (contacts, leads, message, settings) can be added as they are built.
+import '../../messages/views/messages_list_view.dart';
+import '../../leads/views/leads_list_view.dart';
+import '../../contacts/views/contacts_list_view.dart';
 
 class MainShellView extends StatelessWidget {
   const MainShellView({super.key});
@@ -17,13 +19,14 @@ class MainShellView extends StatelessWidget {
 
     final List<Widget> pages = [
       const HomeView(key: ValueKey('home')),
-      const Center(key: ValueKey('contacts'), child: Text("Contacts")),
-      const Center(key: ValueKey('leads'), child: Text("Leads")),
-      const Center(key: ValueKey('message'), child: Text("Message")),
+      const ContactsListView(key: ValueKey('contacts')),
+      const LeadsListView(key: ValueKey('leads')),
+      const MessagesListView(key: ValueKey('message')),
       const SettingsView(key: ValueKey('settings')),
     ];
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFFF9FAFB), // A common generic background
       body: Stack(
         children: [

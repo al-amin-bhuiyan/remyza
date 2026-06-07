@@ -4,11 +4,11 @@ class AppAvatar extends StatelessWidget {
   final String fullName;
   final double radius;
   const AppAvatar({
-    Key? key,
+    super.key,
     this.imageUrl,
     required this.fullName,
     this.radius = 30.0,
-  }) : super(key: key);
+  });
   String getInitials(String name) {
     if (name.trim().isEmpty) return "?";
     List<String> nameParts = name.trim().split(RegExp(r'\s+'));

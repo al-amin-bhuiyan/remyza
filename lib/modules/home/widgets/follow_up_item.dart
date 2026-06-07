@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:remyza/core/constants/app_routes.dart';
 
 class FollowUpItem extends StatelessWidget {
   final String iconPath;
@@ -16,7 +18,9 @@ class FollowUpItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () => context.push(AppRoutes.setReminder),
+      child: Container(
       width: double.infinity,
       height: 85.h,
       padding: EdgeInsets.all(16.w),
@@ -77,6 +81,7 @@ class FollowUpItem extends StatelessWidget {
           ),
           Icon(Icons.chevron_right, color: const Color(0xFF747688), size: 24.sp),
         ],
+      ),
       ),
     );
   }

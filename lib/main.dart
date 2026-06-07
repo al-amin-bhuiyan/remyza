@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'core/router/app_router.dart';
 import 'core/utils/page_transitions.dart';
+import 'core/utils/snackbar_helper.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
       ensureScreenSize: true,
       builder: (context, child) {
         return GetMaterialApp.router(
+          scaffoldMessengerKey: SnackbarHelper.messengerKey,
           title: 'REMYZA App',
           debugShowCheckedModeBanner: false,
           theme: _lightTheme,

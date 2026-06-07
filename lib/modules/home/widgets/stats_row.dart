@@ -27,7 +27,7 @@ class StatsRow extends StatelessWidget {
           StatCard(
             iconPath: CustomAssets.replies,
             value: '843',
-            label: 'Replies',
+            label: 'AI Replies',
           ),
           StatCard(
             iconPath: CustomAssets.activityLeads,

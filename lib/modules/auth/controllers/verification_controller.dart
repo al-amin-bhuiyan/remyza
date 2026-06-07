@@ -4,15 +4,20 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_routes.dart';
+import '../../../../core/interfaces/i_auth_repository.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 
 class VerificationController extends GetxController {
+  final IAuthRepository _authRepository;
+
+  VerificationController(this._authRepository);
   // ─── OTP Text Controllers ──────────────────────────────────────────────────
-  final TextEditingController otp1Controller = TextEditingController(text: "4");
-  final TextEditingController otp2Controller = TextEditingController(text: "4");
-  final TextEditingController otp3Controller = TextEditingController(text: "4");
-  final TextEditingController otp4Controller = TextEditingController(text: "4");
-  final TextEditingController otp5Controller = TextEditingController(text: "4");
-  final TextEditingController otp6Controller = TextEditingController(text: "4");
+  final TextEditingController otp1Controller = TextEditingController();
+  final TextEditingController otp2Controller = TextEditingController();
+  final TextEditingController otp3Controller = TextEditingController();
+  final TextEditingController otp4Controller = TextEditingController();
+  final TextEditingController otp5Controller = TextEditingController();
+  final TextEditingController otp6Controller = TextEditingController();
 
   // ─── Focus Nodes ──────────────────────────────────────────────────────────
   final FocusNode otp1FocusNode = FocusNode();
@@ -60,10 +65,18 @@ class VerificationController extends GetxController {
   @override
   void onClose() {
     _stopTimer();
-    otp1Controller.dispose(); otp2Controller.dispose(); otp3Controller.dispose();
-    otp4Controller.dispose(); otp5Controller.dispose(); otp6Controller.dispose();
-    otp1FocusNode.dispose();  otp2FocusNode.dispose();  otp3FocusNode.dispose();
-    otp4FocusNode.dispose();  otp5FocusNode.dispose();  otp6FocusNode.dispose();
+    otp1Controller.dispose();
+    otp2Controller.dispose();
+    otp3Controller.dispose();
+    otp4Controller.dispose();
+    otp5Controller.dispose();
+    otp6Controller.dispose();
+    otp1FocusNode.dispose();
+    otp2FocusNode.dispose();
+    otp3FocusNode.dispose();
+    otp4FocusNode.dispose();
+    otp5FocusNode.dispose();
+    otp6FocusNode.dispose();
     super.onClose();
   }
 
@@ -97,20 +110,24 @@ class VerificationController extends GetxController {
 
   /// Verifies OTP
   Future<void> verifyCode(BuildContext context) async {
-    if (fullOtp.length < 6) {
-      Get.snackbar('Error', 'Please enter the complete 6-digit code', snackPosition: SnackPosition.BOTTOM);
+    final otp = fullOtp;
+    if (otp.length < 6) {
+      SnackbarHelper.showError('Please enter all 6 digits.');
       return;
     }
 
     isLoading.value = true;
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
-      Get.snackbar('Success', 'OTP verified successfully!', snackPosition: SnackPosition.BOTTOM);
-      // Navigate to next screen (Home/Shell where nav_bar is visible)
-      if (context.mounted) {
-        context.go(AppRoutes.home);
+      final success = await _authRepository.verifyOtp(phoneNumber.value, otp);
+      if (success) {
+        if (context.mounted) {
+          context.go(AppRoutes.home);
+        }
+      } else {
+        SnackbarHelper.showError('The code you entered is incorrect. Try again.');
       }
+    } catch (e) {
+      SnackbarHelper.showError('Verification failed. Please try again.');
     } finally {
       isLoading.value = false;
     }
@@ -122,12 +139,17 @@ class VerificationController extends GetxController {
 
     isLoading.value = true;
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 1));
-      _clearAllFields();
-      _startTimer();
-      otp1FocusNode.requestFocus();
-      Get.snackbar('Success', 'OTP resent successfully', snackPosition: SnackPosition.BOTTOM);
+      final success = await _authRepository.resendOtp(phoneNumber.value);
+      if (success) {
+        _clearAllFields();
+        _startTimer();
+        otp1FocusNode.requestFocus();
+        SnackbarHelper.showSuccess('OTP resent successfully.');
+      } else {
+        SnackbarHelper.showError('Failed to resend OTP.');
+      }
+    } catch (e) {
+      SnackbarHelper.showError('Failed to resend OTP: $e');
     } finally {
       isLoading.value = false;
     }
@@ -137,38 +159,76 @@ class VerificationController extends GetxController {
 
   void _updateOtpValue(String value, int index) {
     switch (index) {
-      case 1: otp1.value = value; break;
-      case 2: otp2.value = value; break;
-      case 3: otp3.value = value; break;
-      case 4: otp4.value = value; break;
-      case 5: otp5.value = value; break;
-      case 6: otp6.value = value; break;
+      case 1:
+        otp1.value = value;
+        break;
+      case 2:
+        otp2.value = value;
+        break;
+      case 3:
+        otp3.value = value;
+        break;
+      case 4:
+        otp4.value = value;
+        break;
+      case 5:
+        otp5.value = value;
+        break;
+      case 6:
+        otp6.value = value;
+        break;
     }
   }
 
   void _focusNext(int i) {
     switch (i) {
-      case 1: otp2FocusNode.requestFocus(); break;
-      case 2: otp3FocusNode.requestFocus(); break;
-      case 3: otp4FocusNode.requestFocus(); break;
-      case 4: otp5FocusNode.requestFocus(); break;
-      case 5: otp6FocusNode.requestFocus(); break;
+      case 1:
+        otp2FocusNode.requestFocus();
+        break;
+      case 2:
+        otp3FocusNode.requestFocus();
+        break;
+      case 3:
+        otp4FocusNode.requestFocus();
+        break;
+      case 4:
+        otp5FocusNode.requestFocus();
+        break;
+      case 5:
+        otp6FocusNode.requestFocus();
+        break;
     }
   }
 
   void _focusPrev(int i) {
     switch (i) {
-      case 2: otp1FocusNode.requestFocus(); break;
-      case 3: otp2FocusNode.requestFocus(); break;
-      case 4: otp3FocusNode.requestFocus(); break;
-      case 5: otp4FocusNode.requestFocus(); break;
-      case 6: otp5FocusNode.requestFocus(); break;
+      case 2:
+        otp1FocusNode.requestFocus();
+        break;
+      case 3:
+        otp2FocusNode.requestFocus();
+        break;
+      case 4:
+        otp3FocusNode.requestFocus();
+        break;
+      case 5:
+        otp4FocusNode.requestFocus();
+        break;
+      case 6:
+        otp5FocusNode.requestFocus();
+        break;
     }
   }
 
   void _fillAllOtpFields(String digits) {
-    final controllers = [otp1Controller, otp2Controller, otp3Controller,
-                         otp4Controller, otp5Controller, otp6Controller];
+    final controllers = [
+      otp1Controller,
+      otp2Controller,
+      otp3Controller,
+      otp4Controller,
+      otp5Controller,
+      otp6Controller,
+    ];
     final observables = [otp1, otp2, otp3, otp4, otp5, otp6];
     for (int i = 0; i < 6; i++) {
       controllers[i].text = digits[i];
@@ -177,8 +237,14 @@ class VerificationController extends GetxController {
   }
 
   void _clearAllFields() {
-    for (final c in [otp1Controller, otp2Controller, otp3Controller,
-                     otp4Controller, otp5Controller, otp6Controller]) {
+    for (final c in [
+      otp1Controller,
+      otp2Controller,
+      otp3Controller,
+      otp4Controller,
+      otp5Controller,
+      otp6Controller,
+    ]) {
       c.clear();
     }
     for (final o in [otp1, otp2, otp3, otp4, otp5, otp6]) {

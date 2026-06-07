@@ -8,14 +8,13 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../controllers/verification_controller.dart';
 
-class VerificationView extends StatelessWidget {
+class VerificationView extends GetView<VerificationController> {
   final String? phoneNumber;
 
   const VerificationView({super.key, this.phoneNumber});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(VerificationController());
     if (phoneNumber != null && phoneNumber!.isNotEmpty) {
       controller.setPhoneNumber(phoneNumber!);
     }
@@ -32,11 +31,21 @@ class VerificationView extends StatelessWidget {
               // Back Button Row
               Align(
                 alignment: Alignment.centerLeft,
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  alignment: Alignment.centerLeft,
-                  icon: Icon(Icons.arrow_back, size: 24.sp, color: AppColors.textPrimary),
-                  onPressed: () => context.pop(),
+                child: GestureDetector(
+                  onTap: () => context.pop(),
+                  child: Container(
+                    width: 32.r,
+                    height: 32.r,
+                    decoration: ShapeDecoration(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      shape: const CircleBorder(),
+                    ),
+                    child: Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      size: 14.r,
+                      color: const Color(0xFF021649),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 24.h),

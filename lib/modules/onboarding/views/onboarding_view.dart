@@ -5,7 +5,7 @@ import '../../../core/constants/app_colors.dart';
 import '../controllers/onboarding_controller.dart';
 import '../widgets/onboarding_page_content.dart';
 class OnboardingView extends GetView<OnboardingController> {
-  const OnboardingView({Key? key}) : super(key: key);
+  const OnboardingView({super.key});
   @override
   Widget build(BuildContext context) {
     Get.put(OnboardingController());

@@ -4,7 +4,7 @@ import '../../../core/constants/app_colors.dart';
 import 'onboarding_content_model.dart';
 class OnboardingPageContent extends StatelessWidget {
   final OnboardingContentModel pageData;
-  const OnboardingPageContent({Key? key, required this.pageData}) : super(key: key);
+  const OnboardingPageContent({super.key, required this.pageData});
   @override
   Widget build(BuildContext context) {
     return Column(

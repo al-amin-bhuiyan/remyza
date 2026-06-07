@@ -35,6 +35,11 @@ dependencies:
   awesome_dialog: ^3.3.0
   cupertino_icons: ^1.0.8
   country_picker: 2.0.27
+  country_code_picker: ^3.4.1
+  file_picker: ^11.0.2
+  csv: ^8.0.0
+  pagination_helper: ^1.0.4
+
 
 dev_dependencies:
   flutter_test:

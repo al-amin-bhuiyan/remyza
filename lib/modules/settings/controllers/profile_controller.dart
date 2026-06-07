@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:country_picker/country_picker.dart';
 
+import '../../../../core/utils/snackbar_helper.dart';
+
 class ProfileController extends GetxController {
   final fullNameController = TextEditingController(text: 'Alex Johnson');
   final emailController = TextEditingController(text: 'alex@example.com');
@@ -36,7 +38,7 @@ class ProfileController extends GetxController {
 
   void saveProfile() {
     // Implement save logic here
-    Get.snackbar('Success', 'Profile updated successfully!', snackPosition: SnackPosition.BOTTOM);
+    SnackbarHelper.showSuccess('Profile updated successfully!');
   }
 
   @override

@@ -1,39 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_routes.dart';
 import '../../../shared/widgets/app_avatar.dart';
 import '../controllers/settings_controller.dart';
 import '../widgets/settings_tile.dart';
-class SettingsView extends StatelessWidget {
+
+class SettingsView extends GetView<SettingsController> {
   const SettingsView({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(SettingsController());
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA), // Soft background for contrast with white cards
+      backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Settings',
           style: TextStyle(
-            color: Color(0xFF021649),
-            fontSize: 18,
+            color: const Color(0xFF021649),
+            fontSize: 18.sp,
             fontFamily: 'Nunito Sans',
             fontWeight: FontWeight.w700,
           ),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 26.w, vertical: 16.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             _buildProfileCard(context),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             // Account Section
             _buildSectionHeader('ACCOUNT'),
             _buildSectionContainer([
@@ -52,24 +53,26 @@ class SettingsView extends StatelessWidget {
                 iconBgColor: const Color(0xFFEFF6FF),
                 title: 'My Plan',
                 trailing: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   decoration: ShapeDecoration(
                     color: const Color(0xFFEFF6FF),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(20.r),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Pro',
                     style: TextStyle(
-                      color: Color(0xFF2563EB),
-                      fontSize: 11,
+                      color: const Color(0xFF2563EB),
+                      fontSize: 11.sp,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  context.push(AppRoutes.myPlan);
+                },
               ),
               SettingsTile(
                 icon: Icons.chat_bubble_outline,
@@ -77,32 +80,22 @@ class SettingsView extends StatelessWidget {
                 iconBgColor: const Color(0xFFF3E8FF),
                 title: 'My SMS Number',
                 subtitle: '+1 555-014...',
-                onTap: () {},
+                onTap: () {
+                  context.push(AppRoutes.smsNumber);
+                },
               ),
               SettingsTile(
                 icon: Icons.notifications_none,
                 iconColor: const Color(0xFFD97706),
                 iconBgColor: const Color(0xFFFFFBEB),
                 title: 'Notifications',
-                trailing: Obx(() => Switch(
-                  value: controller.isNotificationsEnabled.value,
-                  onChanged: controller.toggleNotifications,
-                  activeThumbColor: Colors.white,
-                  activeTrackColor: const Color(0xFF22C55E),
-                )),
                 onTap: () {
-                  controller.toggleNotifications(!controller.isNotificationsEnabled.value);
+                  context.push(AppRoutes.notificationPrefs);
                 },
               ),
-              SettingsTile(
-                icon: Icons.lock_outline,
-                iconColor: const Color(0xFF16A34A),
-                iconBgColor: const Color(0xFFF0FDF4),
-                title: 'Privacy & Security',
-                onTap: () {},
-              ),
+            
             ]),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             // AI Section
             _buildSectionHeader('AI'),
             _buildSectionContainer([
@@ -111,7 +104,9 @@ class SettingsView extends StatelessWidget {
                 iconColor: const Color(0xFF7C3AED),
                 iconBgColor: const Color(0xFFF3E8FF),
                 title: 'AI Settings',
-                onTap: () {},
+                onTap: () {
+                  context.push(AppRoutes.aiSettings);
+                },
               ),
               SettingsTile(
                 icon: Icons.chat_outlined,
@@ -128,8 +123,17 @@ class SettingsView extends StatelessWidget {
                   controller.toggleAutoReply(!controller.isAutoReplyEnabled.value);
                 },
               ),
+              SettingsTile(
+                icon: Icons.bolt_outlined,
+                iconColor: const Color(0xFF7C3AED),
+                iconBgColor: const Color(0xFFF3E8FF),
+                title: 'Auto-Capture',
+                onTap: () {
+                  context.push(AppRoutes.autoCapture);
+                },
+              ),
             ]),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             // Support Section
             _buildSectionHeader('SUPPORT'),
             _buildSectionContainer([
@@ -138,17 +142,21 @@ class SettingsView extends StatelessWidget {
                 iconColor: const Color(0xFF2563EB),
                 iconBgColor: const Color(0xFFEFF6FF),
                 title: 'Help Center',
-                onTap: () {},
+                onTap: () {
+                  context.push(AppRoutes.helpSupport);
+                },
               ),
               SettingsTile(
                 icon: Icons.phone_outlined,
                 iconColor: const Color(0xFF16A34A),
                 iconBgColor: const Color(0xFFF0FDF4),
                 title: 'Contact Support',
-                onTap: () {},
+                onTap: () {
+                  context.push(AppRoutes.sendEmail);
+                },
               ),
             ]),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             // Legal Section
             _buildSectionHeader('LEGAL'),
             _buildSectionContainer([
@@ -157,17 +165,21 @@ class SettingsView extends StatelessWidget {
                 iconColor: const Color(0xFF2563EB),
                 iconBgColor: const Color(0xFFEFF6FF),
                 title: 'Privacy Policy',
-                onTap: () {},
+                onTap: () {
+                  context.push(AppRoutes.privacyPolicy);
+                },
               ),
               SettingsTile(
                 icon: Icons.description_outlined,
                 iconColor: const Color(0xFF475569),
                 iconBgColor: const Color(0xFFF8F9FC),
                 title: 'Terms of Service',
-                onTap: () {},
+                onTap: () {
+                  context.push(AppRoutes.termsOfService);
+                },
               ),
             ]),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             // Log Out Section
             _buildSectionContainer([
               SettingsTile(
@@ -179,20 +191,21 @@ class SettingsView extends StatelessWidget {
                 onTap: () {},
               ),
             ]),
-            const SizedBox(height: 80), // To make room for bottom nav if overlapping
+            SizedBox(height: 80.h),
           ],
         ),
       ),
     );
   }
+
   Widget _buildProfileCard(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         shadows: const [
           BoxShadow(
@@ -208,61 +221,49 @@ class SettingsView extends StatelessWidget {
             fullName: 'Alex Johnson',
             radius: 28,
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Alex Johnson',
                   style: TextStyle(
-                    color: Color(0xFF0F172A),
-                    fontSize: 16,
+                    color: const Color(0xFF0F172A),
+                    fontSize: 16.sp,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(height: 4),
-                const Text(
+                SizedBox(height: 4.h),
+                Text(
                   'alex@example.com',
                   style: TextStyle(
-                    color: Color(0xFF64748B),
-                    fontSize: 14,
+                    color: const Color(0xFF64748B),
+                    fontSize: 14.sp,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 6),
-                GestureDetector(
-                  onTap: () {
-                    context.push(AppRoutes.profile);
-                  },
-                  child: const Text(
-                    'Edit Profile',
-                    style: TextStyle(
-                      color: Color(0xFF2563EB),
-                      fontSize: 12,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
+                SizedBox(height: 6.h),
+          
               ],
             ),
           ),
-          Icon(Icons.chevron_right, size: 20, color: Colors.grey.shade400),
+          Icon(Icons.chevron_right, size: 20.r, color: Colors.grey.shade400),
         ],
       ),
     );
   }
+
   Widget _buildSectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0, left: 4),
+      padding: EdgeInsets.only(bottom: 8.h, left: 4.w),
       child: Text(
         title,
-        style: const TextStyle(
-          color: Color(0xFF021649),
-          fontSize: 16,
+        style: TextStyle(
+          color: const Color(0xFF021649),
+          fontSize: 16.sp,
           fontFamily: 'Inter',
           fontWeight: FontWeight.w700,
           letterSpacing: 0.80,
@@ -270,6 +271,7 @@ class SettingsView extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildSectionContainer(List<Widget> children) {
     return Container(
       width: double.infinity,
@@ -277,7 +279,7 @@ class SettingsView extends StatelessWidget {
       decoration: ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         shadows: const [
           BoxShadow(

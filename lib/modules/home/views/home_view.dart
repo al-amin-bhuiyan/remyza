@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import '../../../core/constants/app_routes.dart';
 
 import '../widgets/greeting_banner.dart';
 import '../widgets/stats_row.dart';
@@ -40,8 +42,8 @@ class HomeView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             ElevatedButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.upload_file, color: Colors.white, size: 16),
+              onPressed: () => context.push(AppRoutes.importContacts),
+              icon: Icon(Icons.upload_file, color: Colors.white, size: 16.r),
               label: Text(
                 'Upload Contacts',
                 style: TextStyle(
@@ -62,7 +64,7 @@ class HomeView extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () => context.push(AppRoutes.contactForm),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF0249AA),
                 shape: const CircleBorder(),

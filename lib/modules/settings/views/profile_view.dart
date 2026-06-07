@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../shared/widgets/app_avatar.dart';
@@ -17,36 +18,45 @@ class ProfileView extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        leading: IconButton(
-          icon: Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.05),
-              shape: BoxShape.circle,
+        leading: Padding(
+          padding: EdgeInsets.only(left: 16.w),
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                if (context.mounted && Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                } else {
+                  Get.back();
+                }
+              },
+              child: Container(
+                width: 32.r,
+                height: 32.r,
+                decoration: ShapeDecoration(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  shape: const CircleBorder(),
+                ),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  size: 14.r,
+                  color: const Color(0xFF021649),
+                ),
+              ),
             ),
-            child: const Icon(Icons.arrow_back, color: Color(0xFF0F172A), size: 18),
           ),
-          onPressed: () {
-            if (context.mounted && Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
-            } else {
-              Get.back();
-            }
-          },
         ),
-        title: const Text(
+        title: Text(
           'Edit Profile',
           style: TextStyle(
-            color: Color(0xFF021649),
-            fontSize: 18,
+            color: const Color(0xFF021649),
+            fontSize: 18.sp,
             fontFamily: 'Nunito Sans',
             fontWeight: FontWeight.w700,
           ),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 24),
+        padding: EdgeInsets.symmetric(horizontal: 26.w, vertical: 24.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -57,13 +67,13 @@ class ProfileView extends StatelessWidget {
                   Obx(() {
                     if (controller.profileImage.value != null) {
                       return CircleAvatar(
-                        radius: 45,
+                        radius: 45.r,
                         backgroundImage: FileImage(controller.profileImage.value!),
                       );
                     }
                     return AppAvatar(
                       fullName: controller.fullNameController.text.isNotEmpty ? controller.fullNameController.text : '?',
-                      radius: 45,
+                      radius: 45.r,
                     );
                   }),
                   Positioned(
@@ -72,16 +82,16 @@ class ProfileView extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => _showImagePickerSheet(context, controller),
                       child: Container(
-                        width: 28,
-                        height: 28,
+                        width: 28.r,
+                        height: 28.r,
                         decoration: BoxDecoration(
                           color: const Color(0xFF2563EB),
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
+                          border: Border.all(color: Colors.white, width: 2.r),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.camera_alt_outlined,
-                          size: 14,
+                          size: 14.r,
                           color: Colors.white,
                         ),
                       ),
@@ -90,7 +100,7 @@ class ProfileView extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
 
             // Form Fields
             _buildLabel('Full Name'),
@@ -100,7 +110,7 @@ class ProfileView extends StatelessWidget {
               hint: 'Full Name',
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildLabel('Email'),
             _buildTextField(
               controller: controller.emailController,
@@ -109,11 +119,11 @@ class ProfileView extends StatelessWidget {
               enabled: false,
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildLabel('Phone'),
             _buildPhoneField(context, controller),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildLabel('Business Name'),
             _buildTextField(
               controller: controller.businessNameController,
@@ -121,7 +131,7 @@ class ProfileView extends StatelessWidget {
               hint: 'Business Name',
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildLabel('Business Type'),
             _buildTextField(
               controller: controller.businessTypeController,
@@ -129,7 +139,7 @@ class ProfileView extends StatelessWidget {
               hint: 'Business Type',
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildLabel('Time Zone'),
             _buildTextField(
               controller: controller.timeZoneController,
@@ -137,24 +147,24 @@ class ProfileView extends StatelessWidget {
               hint: 'Time Zone',
             ),
 
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
             // Account Created Footer
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
               decoration: BoxDecoration(
                 color: const Color(0xFFF8F9FC),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
                 border: Border.all(color: const Color(0xFFF1F5F9)),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Account Created',
                     style: TextStyle(
-                      color: Color(0xFF94A3B8),
-                      fontSize: 12,
+                      color: const Color(0xFF94A3B8),
+                      fontSize: 12.sp,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w400,
                     ),
@@ -162,8 +172,8 @@ class ProfileView extends StatelessWidget {
                   Text(
                     'May 1, 2026',
                     style: TextStyle(
-                      color: Color(0xFF64748B),
-                      fontSize: 13,
+                      color: const Color(0xFF64748B),
+                      fontSize: 13.sp,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500,
                     ),
@@ -172,29 +182,29 @@ class ProfileView extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             // Save Button
             ElevatedButton(
               onPressed: controller.saveProfile,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF0249AA),
-                minimumSize: const Size(double.infinity, 50),
+                minimumSize: Size(double.infinity, 50.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
                 elevation: 0,
               ),
-              child: const Text(
+              child: Text(
                 'Save Changes',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40.h),
           ],
         ),
       ),
@@ -205,8 +215,8 @@ class ProfileView extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
       ),
       builder: (context) {
         return SafeArea(
@@ -238,12 +248,12 @@ class ProfileView extends StatelessWidget {
 
   Widget _buildLabel(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: 8.h),
       child: Text(
         text,
-        style: const TextStyle(
-          color: Color(0xFF64748B),
-          fontSize: 14,
+        style: TextStyle(
+          color: const Color(0xFF64748B),
+          fontSize: 14.sp,
           fontFamily: 'Inter',
           fontWeight: FontWeight.w600,
         ),
@@ -260,7 +270,7 @@ class ProfileView extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: enabled ? Colors.white : const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: const Color(0xFFE2E8F0),
         ),
@@ -270,16 +280,16 @@ class ProfileView extends StatelessWidget {
         enabled: enabled,
         style: TextStyle(
           color: enabled ? const Color(0xFF0F172A) : const Color(0xFF64748B),
-          fontSize: 14,
+          fontSize: 14.sp,
           fontFamily: 'Inter',
           fontWeight: FontWeight.w400,
         ),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: const TextStyle(color: Color(0xFF94A3B8)),
-          prefixIcon: Icon(icon, size: 20, color: const Color(0xFF94A3B8)),
+          prefixIcon: Icon(icon, size: 20.r, color: const Color(0xFF94A3B8)),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+          contentPadding: EdgeInsets.symmetric(vertical: 16.h),
         ),
       ),
     );
@@ -289,24 +299,24 @@ class ProfileView extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: const Color(0xFFE2E8F0),
         ),
       ),
       child: Row(
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Icon(Icons.phone_outlined, size: 20, color: Color(0xFF94A3B8)),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.w),
+            child: Icon(Icons.phone_outlined, size: 20.r, color: const Color(0xFF94A3B8)),
           ),
           GestureDetector(
             onTap: () => controller.pickCountry(context),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
               decoration: BoxDecoration(
                 border: Border.all(color: const Color(0xFFE2E8F0)),
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(4.r),
               ),
               child: Obx(() => Text(
                 '${controller.selectedCountry.value.flagEmoji} +${controller.selectedCountry.value.phoneCode}',
@@ -318,7 +328,7 @@ class ProfileView extends StatelessWidget {
               )),
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
           Expanded(
             child: TextField(
               controller: controller.phoneController,
@@ -329,11 +339,11 @@ class ProfileView extends StatelessWidget {
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w400,
               ),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Phone Number',
-                hintStyle: TextStyle(color: Color(0xFF94A3B8)),
+                hintStyle: const TextStyle(color: Color(0xFF94A3B8)),
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 16),
+                contentPadding: EdgeInsets.symmetric(vertical: 16.h),
               ),
             ),
           ),
